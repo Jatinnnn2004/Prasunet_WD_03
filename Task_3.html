@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <!-- <link rel="stylesheet" href="tic_styles.css"> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Margarine&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: "Pacifico", cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url(image/7973193_3398605.jpg);
+  }
+  h1{
+    color:rgb(201, 194, 194);
+    margin-bottom: 100px;
+    font-size: 60px;
+  }
+  
+  .container {
+    color: #f0f0f0;
+    text-align: center;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin: 20px auto;
+  }
+  
+  .cell {
+    background-color: #8b6597c9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    cursor: pointer;
+  }
+  .message {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  button {
+    font-size: 1em;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }  
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div id="board" class="board">
+      <div class="cell" onclick="placeMarker(0)"></div>
+      <div class="cell" onclick="placeMarker(1)"></div>
+      <div class="cell" onclick="placeMarker(2)"></div>
+      <div class="cell" onclick="placeMarker(3)"></div>
+      <div class="cell" onclick="placeMarker(4)"></div>
+      <div class="cell" onclick="placeMarker(5)"></div>
+      <div class="cell" onclick="placeMarker(6)"></div>
+      <div class="cell" onclick="placeMarker(7)"></div>
+      <div class="cell" onclick="placeMarker(8)"></div>
+    </div>
+    <p id="message" class="message"></p>
+    <button onclick="resetBoard()">Reset</button>
+  </div>
+
+  <script >let currentPlayer = 'X';
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let gameActive = true;
+    
+    const winningConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+    
+    const boardCells = document.querySelectorAll('.cell');
+    const messageText = document.getElementById('message');
+    
+    function checkWinner() {
+      for (let condition of winningConditions) {
+        let [a, b, c] = condition;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          return board[a];
+        }
+      }
+      return null;
+    }
+    
+    function placeMarker(cellIndex) {
+      if (!gameActive || board[cellIndex] !== '') return;
+    
+      board[cellIndex] = currentPlayer;
+      boardCells[cellIndex].innerText = currentPlayer;
+      let winner = checkWinner();
+      if (winner) {
+        messageText.innerText = `${winner}'s wins!`;
+        gameActive = false;
+        return;
+      }
+    
+      if (board.every(cell => cell !== '')) {
+        messageText.innerText = "It's a tie!";
+        gameActive = false;
+        return;
+      }
+    
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      messageText.innerText = `${currentPlayer}'s turn`;
+    }
+    
+    function resetBoard() {
+      currentPlayer = 'X';
+      board = ['', '', '', '', '', '', '', '', ''];
+      gameActive = true;
+      messageText.innerText = `${currentPlayer} turn`;
+      boardCells.forEach(cell => cell.innerText = '');
+    }</script>
+</body>
+</html>
